@@ -4,6 +4,7 @@ from fastapi import FastAPI, HTTPException
 import mysql.connector
 from credentials import myHost, myUser, myPassword
 from uuid import UUID
+from bill import Bill
 
 
 
@@ -18,8 +19,6 @@ mydb = mysql.connector.connect(
 #Cursor to access mysql
 mycursor = mydb.cursor()
 mycursor.execute("USE bills")
-
-
 
 
 
@@ -57,18 +56,31 @@ async def getbills(billId : str):
 
 
 @app.post("/bill")
-async def postbill():
-    return {"message" : "POST /bill good"}
+async def postbill(bill : Bill):
+    #Generate an uuid
+    mycursor.execute("SELECT uuid()")
+    uuid = mycursor.fetchone()
+
+    #Insert bill in the database
+    insert = "INSERT INTO BILLS VALUES (%s, %s, %s, %s, %s)"
+    values = (uuid[0], bill.billReceiver, bill.billPayer, bill.payDate, bill.payedValue)
+    mycursor.execute(insert, values)
+    mydb.commit()
+    #FALTA VERIRICAR UUID E OUTRAS CENAS
+    if mycursor.rowcount == 0:
+        raise HTTPException(status_code=500, detail="An unexpected error has occured")
+    else:
+        return {"uuid" : uuid[0]}
 
 
 @app.put("/bill")
-async def postbill():
+async def putbill():
     return {"message" : "PUT /bill good"}
 
 
 @app.delete("/bill/{billId}")
 async def deletebill(billId : str):
-#Verify if billId is valid
+    #Verify if billId is valid
     try:
         UUID(billId)
     except ValueError:
