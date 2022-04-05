@@ -5,6 +5,8 @@ import mysql.connector
 from credentials import myHost, myUser, myPassword
 from uuid import UUID
 
+
+
 app = FastAPI()
 
 #Set mysql access credentials
@@ -65,5 +67,18 @@ async def postbill():
 
 
 @app.delete("/bill/{billId}")
-async def deletebill():
-    return {"message" : "DELETE /bill good"}
+async def deletebill(billId : str):
+#Verify if billId is valid
+    try:
+        UUID(billId)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid bill id supplied")
+    
+    #Search for the bill to be deleted and throw 404 if not found
+    delete = "DELETE FROM BILLS WHERE id = (%s)"
+    mycursor.execute(delete, [billId])
+    mydb.commit()
+    if mycursor.rowcount == 0:
+        raise HTTPException(status_code=404, detail="Bill requested cannot be found in the system")
+    else:
+        raise HTTPException(status_code=200, detail="Bill successfully deleted")
