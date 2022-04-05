@@ -4,7 +4,7 @@ from fastapi import FastAPI, HTTPException
 import mysql.connector
 from credentials import myHost, myUser, myPassword
 from uuid import UUID
-from bill import Bill
+from bill import Bill, UpdateBill
 
 
 
@@ -25,7 +25,7 @@ mycursor.execute("USE bills")
 
 @app.get("/")
 async def root():
-    return {"message" : "Server says It's All Good Man"}
+    return {"Server says It's All Good Man"}
 
 
 @app.get("/bills")
@@ -73,9 +73,36 @@ async def postbill(bill : Bill):
         return {"uuid" : uuid[0]}
 
 
-@app.put("/bill")
-async def putbill():
-    return {"message" : "PUT /bill good"}
+@app.put("/bill/{billId}")
+async def putbill(billId : str, bill : UpdateBill):
+    #Verify if billId is valid
+    try:
+        UUID(billId)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid bill id supplied")
+    
+    #Check if bill exists in the db
+    mycursor.execute("SELECT * FROM BILLS WHERE id = (%s)", [billId])
+    if not mycursor.fetchone():
+        raise HTTPException(status_code=404, detail="Bill requested cannot be found in the system")
+    
+    #Check if all fields are empty or not
+    if bill.billReceiver == None and bill.billPayer == None and bill.payDate == None and bill.payedValue == None:
+        raise HTTPException(status_code=400, detail="All fields given are empty so is impossible to perform updates")
+    else:
+        if bill.billPayer:
+            mycursor.execute("UPDATE BILLS SET billPayer = (%s) WHERE id = (%s)", [bill.billPayer, billId])
+            mydb.commit()
+        if bill.billReceiver:
+            mycursor.execute("UPDATE BILLS SET billReceiver = (%s) WHERE id = (%s)", [bill.billReceiver, billId])
+            mydb.commit()            
+        if bill.payDate:
+            mycursor.execute("UPDATE BILLS SET payDate = (%s) WHERE id = (%s)", [bill.payDate, billId])
+            mydb.commit() 
+        if bill.payedValue:
+            mycursor.execute("UPDATE BILLS SET payValue = (%s) WHERE id = (%s)", [bill.payedValue, billId])
+            mydb.commit() 
+        raise HTTPException(status_code=200, detail="Bill successfully updated")
 
 
 @app.delete("/bill/{billId}")
