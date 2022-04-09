@@ -7,7 +7,6 @@ from uuid import UUID
 from bill import Bill, UpdateBill
 
 
-
 app = FastAPI()
 
 #Set mysql access credentials
@@ -57,9 +56,14 @@ async def getbills(billId : str):
 
 @app.post("/bill")
 async def postbill(bill : Bill):
-    #Generate an uuid
-    mycursor.execute("SELECT uuid()")
-    uuid = mycursor.fetchone()
+    #Generate an uuid and verify if it exists or not
+    while True:
+        mycursor.execute("SELECT uuid()")
+        uuid = mycursor.fetchone()
+        mycursor.execute("SELECT * FROM BILLS WHERE id = (%s)", [uuid[0]])
+        #Means that uuid generated doesn't exist therefore it can be used in the database
+        if not mycursor.fetchone():
+            break
 
     #Insert bill in the database
     insert = "INSERT INTO BILLS VALUES (%s, %s, %s, %s, %s)"
@@ -102,6 +106,7 @@ async def putbill(billId : str, bill : UpdateBill):
         if bill.payedValue:
             mycursor.execute("UPDATE BILLS SET payValue = (%s) WHERE id = (%s)", [bill.payedValue, billId])
             mydb.commit() 
+        
         raise HTTPException(status_code=200, detail="Bill successfully updated")
 
 
