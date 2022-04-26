@@ -1,10 +1,11 @@
 #Run with: uvicorn main:app --reload
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Header
 import mysql.connector
 from credentials import myHost, myUser, myPassword
 from uuid import UUID
 from bill import Bill, UpdateBill
+from typing import Optional
 
 
 app = FastAPI()
@@ -28,7 +29,12 @@ async def root():
 
 
 @app.get("/bills")
-async def getbills():
+async def getbills(authToken: Optional[str] = Header(None)):
+    #Meter aqui a chamada à API do nogueira
+    print(authToken)
+    #Excepção a lançar caso autenticação inválida
+    #raise HTTPException(status_code=401, detail="Unauthorized, invalid authentication credentials")
+    
     mycursor.execute("SELECT * FROM BILLS")
     res = []
     for value in mycursor:
@@ -37,7 +43,12 @@ async def getbills():
 
 
 @app.get("/bill/{billId}")
-async def getbills(billId : str):
+async def getbills(billId : str, authToken: Optional[str] = Header(None)):
+    #Meter aqui a chamada à API do nogueira
+    print(authToken)
+    #Excepção a lançar caso autenticação inválida
+    #raise HTTPException(status_code=401, detail="Unauthorized, invalid authentication credentials")
+
     #Verify if billId is valid
     try:
         UUID(billId)
@@ -55,7 +66,12 @@ async def getbills(billId : str):
 
 
 @app.post("/bill")
-async def postbill(bill : Bill):
+async def postbill(bill : Bill, authToken: Optional[str] = Header(None)):
+    #Meter aqui a chamada à API do nogueira
+    print(authToken)
+    #Excepção a lançar caso autenticação inválida
+    #raise HTTPException(status_code=401, detail="Unauthorized, invalid authentication credentials")
+
     #Generate an uuid and verify if it exists or not
     while True:
         mycursor.execute("SELECT uuid()")
@@ -78,7 +94,12 @@ async def postbill(bill : Bill):
 
 
 @app.put("/bill/{billId}")
-async def putbill(billId : str, bill : UpdateBill):
+async def putbill(billId : str, bill : UpdateBill, authToken: Optional[str] = Header(None)):
+    #Meter aqui a chamada à API do nogueira
+    print(authToken)
+    #Excepção a lançar caso autenticação inválida
+    #raise HTTPException(status_code=401, detail="Unauthorized, invalid authentication credentials")
+    
     #Verify if billId is valid
     try:
         UUID(billId)
@@ -111,7 +132,12 @@ async def putbill(billId : str, bill : UpdateBill):
 
 
 @app.delete("/bill/{billId}")
-async def deletebill(billId : str):
+async def deletebill(billId : str, authToken: Optional[str] = Header(None)):
+    #Meter aqui a chamada à API do nogueira
+    print(authToken)
+    #Excepção a lançar caso autenticação inválida
+    #raise HTTPException(status_code=401, detail="Unauthorized, invalid authentication credentials")
+    
     #Verify if billId is valid
     try:
         UUID(billId)
