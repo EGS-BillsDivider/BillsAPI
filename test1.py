@@ -17,7 +17,7 @@ headers = {
 
 
 #------POST TEST---------
-data = { "billPayer": 123456789, "payDate": "2019-05-08", "payedValue" : 15.05}
+data = { "billPayer": 123456789, "billReceiver": 12345688, "payDate": "2019-05-08", "payedValue" : 15.05}
 x = requests.post("http://127.0.0.1:8000/bill", data=json.dumps(data), headers=headers)
 
 
