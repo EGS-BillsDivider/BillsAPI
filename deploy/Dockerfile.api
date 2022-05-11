@@ -1,0 +1,23 @@
+FROM python:3.8-alpine
+
+MAINTAINER Joao Gameiro
+
+LABEL version="1.29.2"
+
+RUN mkdir /api
+
+WORKDIR /api
+
+COPY src/requirements.txt requirements.txt
+
+RUN pip install -r requirements.txt;
+
+COPY src/bill.py bill.py
+COPY src/main.py main.py
+COPY src/startup.sh startup.sh
+
+RUN chmod +x startup.sh  
+
+EXPOSE 8000
+
+ENTRYPOINT ["./startup.sh"]

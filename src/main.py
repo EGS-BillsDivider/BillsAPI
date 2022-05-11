@@ -2,20 +2,24 @@
 
 from fastapi import FastAPI, HTTPException, Header
 import mysql.connector
-from credentials import myHost, myUser, myPassword
 from uuid import UUID
 from bill import Bill, UpdateBill
 from typing import Optional
-
+import time
 
 app = FastAPI()
 
-#Set mysql access credentials
-mydb = mysql.connector.connect(
-  host=myHost,
-  user=myUser,
-  password=myPassword
-)
+#Set mysql access credentials 
+config = {
+    'host': 'db',
+    'user': 'root',
+    'password': 'root',
+    'port': '3306'
+    'database': 'bills',
+}
+mydb = mysql.connector.connect(**config)
+
+
 #Cursor to access mysql
 mycursor = mydb.cursor()
 mycursor.execute("USE bills")

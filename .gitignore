@@ -1,4 +1,4 @@
-__pycache__/
-credentials.py
-test.py
-venv/
+deploy/db/
+src/credentials.py
+src/test.py
+
