@@ -1,3 +1,5 @@
+-- this file must be in directory ./db/entry
+
 CREATE DATABASE IF NOT EXISTS bills;
 
 USE bills;

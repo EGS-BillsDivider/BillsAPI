@@ -1,4 +1,5 @@
 deploy/db/
+src/db/
 src/credentials.py
 src/test.py
 

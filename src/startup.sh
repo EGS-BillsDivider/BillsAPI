@@ -1,5 +1,5 @@
 #!/bin/sh
-echo "Waiting for DB"
+echo "Waiting for database to be up..."
 
 echo "" | nc -w 1  db 3306
 
@@ -7,8 +7,9 @@ while [ ! $? -eq 0 ]; do
     sleep 1
     echo "" | nc -w 1  db 3306
 done
-echo "DB Up"
 sleep 5
-echo "Starting"
+echo -e "\nDatabase up..."
+sleep 5
+echo -e "Starting app..."
 
-uvicorn main:app --reload main:app  0.0.0.0:8000
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
