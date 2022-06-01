@@ -5,7 +5,6 @@ import mysql.connector
 from uuid import UUID
 from bill import Bill, UpdateBill
 from typing import Optional
-import time
 
 app = FastAPI()
 
