@@ -89,7 +89,7 @@ async def postbill(bill : Bill, authToken: Optional[str] = Header(None)):
     values = (uuid[0], bill.billReceiver, bill.billPayer, bill.payDate, bill.payedValue)
     mycursor.execute(insert, values)
     mydb.commit()
-    #FALTA VERIRICAR UUID E OUTRAS CENAS
+
     if mycursor.rowcount == 0:
         raise HTTPException(status_code=500, detail="An unexpected error has occured")
     else:
