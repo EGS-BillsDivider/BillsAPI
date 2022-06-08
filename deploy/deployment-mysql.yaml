@@ -15,16 +15,13 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: mysql:8.0.21
+        image: registry.deti:5000/billsdivider/billsdb:08062022
         env:
         - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: flaskapi-secrets
-              key: db_root_password
+          value: root
         ports:
         - containerPort: 3306
-          name: mysql-port
+          name: mysql
         volumeMounts:
           - name: mysql-persistent-storage
             mountPath: /var/lib/mysql
@@ -42,7 +39,7 @@ spec:
   ports:
   - port: 3306
     protocol: TCP
-    name: bills-db
+    name: bills-mysql
   selector:
-    app: db
+    app: bills-db
   type: NodePort
