@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bills-mysql
+  name: bills-db
   namespace: jpcg
 spec:
   selector:
@@ -14,14 +14,11 @@ spec:
         app: bills-db
     spec:
       containers:
-      - name: mysql
+      - name: bills-db
         image: registry.deti:5000/billsdivider/billsdb:08062022
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          value: root
         ports:
         - containerPort: 3306
-          name: mysql
+          name: bills-db
         volumeMounts:
           - name: mysql-persistent-storage
             mountPath: /var/lib/mysql
@@ -33,13 +30,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: bills-mysql
+  name: bills-db
   namespace: jpcg
 spec:
   ports:
   - port: 3306
     protocol: TCP
-    name: bills-mysql
+    name: bills-db
   selector:
     app: bills-db
   type: NodePort

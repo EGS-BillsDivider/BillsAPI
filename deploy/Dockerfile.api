@@ -1,3 +1,6 @@
+#To build: sudo docker build -t registry.deti:5000/billsdivider/billsapi:13062022 -f deploy/Dockerfile.api .
+#To add to registry: sudo docker push registry.deti:5000/billsdivider/billsapi:13062022
+
 FROM python:3.8-alpine
 
 MAINTAINER Joao Gameiro

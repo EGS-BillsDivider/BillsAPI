@@ -10,7 +10,7 @@ app = FastAPI()
 
 #Set mysql access credentials 
 config = {
-    'host': 'db',
+    'host': 'bills-db',
     'user': 'root',
     'password': 'root',
     'port': '3306',

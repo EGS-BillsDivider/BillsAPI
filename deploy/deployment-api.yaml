@@ -3,25 +3,40 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: bills-api
-  namespace: billsapi-jpcg
+  namespace: jpcg
 spec:
   selector:
     matchLabels:
       app: bills-api
   template:
     metadata:
-      label:
+      labels:
         app: bills-api
     spec:
       containers:
-      - name: bills-api
-        image: registry.deti:5000/bills-api-jpcg:v1
+      - name: api
+        image: registry.deti:5000/billsdivider/billsapi:13062022
         resources:
           requests:
-            memory: "32Mi"
-            cpu: "10m"
-          limits:
-            memory: "128Mi"
+            memory: "250Mi"
             cpu: "500m"
+          limits:
+            memory: "500Mi"
+            cpu: "1000m"
         ports:
         - containerPort: 8000
+          name: billsapi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bills-api
+  namespace: jpcg
+spec:
+  ports:
+  - port: 8000
+    protocol: TCP
+    name: bills-api
+  selector:
+    app: bills-api
+  type: NodePort
