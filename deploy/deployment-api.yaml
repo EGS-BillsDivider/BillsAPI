@@ -26,6 +26,14 @@ spec:
         ports:
         - containerPort: 8000
           name: billsapi
+        volumeMounts:
+        - name: billsapi-secret
+          mountPath: "/tmp/secrets"
+          readOnly: true
+      volumes:
+      - name: billsapi-secret
+        secret:
+          secretName: billsapi-secret
 ---
 apiVersion: v1
 kind: Service

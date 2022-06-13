@@ -5,17 +5,15 @@ import mysql.connector
 from uuid import UUID
 from bill import Bill, UpdateBill
 from typing import Optional
+import ast
 
 app = FastAPI()
 
 #Set mysql access credentials 
-config = {
-    'host': 'bills-db',
-    'user': 'root',
-    'password': 'root',
-    'port': '3306',
-    'database': 'bills'
-}
+file = open("/tmp/secrets/credentials", "r")
+content = file.read()
+config = ast.literal_eval(content)
+file.close()
 mydb = mysql.connector.connect(**config)
 
 

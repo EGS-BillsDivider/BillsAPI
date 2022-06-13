@@ -3,18 +3,18 @@
 
 version: "3"
 services:
-    api:
-        container_name: api
+    bills-api:
+        container_name: bills-api
         links:
-            - db
-        image: api
+            - bills-db
+        image: bills-api
         build:
           context: ..
           dockerfile: deploy/Dockerfile.api
         ports:
             - "8000:8000"
-    db:
-        container_name: db
+    bills-db:
+        container_name: bills-db
         image: mysql:8.0.21
         environment:
             MYSQL_ROOT_PASSWORD: root

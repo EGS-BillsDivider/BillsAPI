@@ -1,0 +1,1 @@
+kubectl create secret generic billsapi-secret --from-file=../src/credentials -n jpcg
