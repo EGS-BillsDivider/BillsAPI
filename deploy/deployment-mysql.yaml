@@ -22,6 +22,12 @@ spec:
         volumeMounts:
           - name: mysql-persistent-storage
             mountPath: /var/lib/mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: db_password
       volumes:
         - name: mysql-persistent-storage
           persistentVolumeClaim:
