@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: registry.deti:5000/billsdivider/billsapi:19062022
+        image: registry.deti:5000/billsdivider/billsapi:20062022
         resources:
           requests:
             memory: "250Mi"
