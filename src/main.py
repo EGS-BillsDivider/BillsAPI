@@ -6,6 +6,7 @@ from uuid import UUID
 from bill import Bill, UpdateBill
 from typing import Optional
 import ast
+import requests
 
 app = FastAPI()
 
@@ -31,10 +32,11 @@ async def root():
 
 @app.get("/bills")
 async def getbills(authToken: Optional[str] = Header(None)):
-    #Meter aqui a chamada à API do nogueira
-    print(authToken)
-    #Excepção a lançar caso autenticação inválida
-    #raise HTTPException(status_code=401, detail="Unauthorized, invalid authentication credentials")
+    #Verify auth token
+    x = requests.get('http://api:3000/posts/verifyUser', headers={'auth-token': authToken})
+    if(x.status_code != 200):
+        #Excepção a lançar caso autenticação inválida
+        raise HTTPException(status_code=401, detail="Unauthorized, invalid authentication credentials")
     
     mycursor.execute("SELECT * FROM BILLS")
     res = []
@@ -45,11 +47,12 @@ async def getbills(authToken: Optional[str] = Header(None)):
 
 @app.get("/bill/{billId}")
 async def getbills(billId : str, authToken: Optional[str] = Header(None)):
-    #Meter aqui a chamada à API do nogueira
-    print(authToken)
-    #Excepção a lançar caso autenticação inválida
-    #raise HTTPException(status_code=401, detail="Unauthorized, invalid authentication credentials")
-
+    #Verify auth token
+    x = requests.get('http://api:3000/posts/verifyUser', headers={'auth-token': authToken})
+    if(x.status_code != 200):
+        #Excepção a lançar caso autenticação inválida
+        raise HTTPException(status_code=401, detail="Unauthorized, invalid authentication credentials")
+    
     #Verify if billId is valid
     try:
         UUID(billId)
@@ -68,10 +71,11 @@ async def getbills(billId : str, authToken: Optional[str] = Header(None)):
 
 @app.post("/bill")
 async def postbill(bill : Bill, authToken: Optional[str] = Header(None)):
-    #Meter aqui a chamada à API do nogueira
-    print(authToken)
-    #Excepção a lançar caso autenticação inválida
-    #raise HTTPException(status_code=401, detail="Unauthorized, invalid authentication credentials")
+    #Verify auth token
+    x = requests.get('http://api:3000/posts/verifyUser', headers={'auth-token': authToken})
+    if(x.status_code != 200):
+        #Excepção a lançar caso autenticação inválida
+        raise HTTPException(status_code=401, detail="Unauthorized, invalid authentication credentials")
 
     #Generate an uuid and verify if it exists or not
     while True:
@@ -96,10 +100,11 @@ async def postbill(bill : Bill, authToken: Optional[str] = Header(None)):
 
 @app.put("/bill/{billId}")
 async def putbill(billId : str, bill : UpdateBill, authToken: Optional[str] = Header(None)):
-    #Meter aqui a chamada à API do nogueira
-    print(authToken)
-    #Excepção a lançar caso autenticação inválida
-    #raise HTTPException(status_code=401, detail="Unauthorized, invalid authentication credentials")
+    #Verify auth token
+    x = requests.get('http://api:3000/posts/verifyUser', headers={'auth-token': authToken})
+    if(x.status_code != 200):
+        #Excepção a lançar caso autenticação inválida
+        raise HTTPException(status_code=401, detail="Unauthorized, invalid authentication credentials")
     
     #Verify if billId is valid
     try:
@@ -134,10 +139,11 @@ async def putbill(billId : str, bill : UpdateBill, authToken: Optional[str] = He
 
 @app.delete("/bill/{billId}")
 async def deletebill(billId : str, authToken: Optional[str] = Header(None)):
-    #Meter aqui a chamada à API do nogueira
-    print(authToken)
-    #Excepção a lançar caso autenticação inválida
-    #raise HTTPException(status_code=401, detail="Unauthorized, invalid authentication credentials")
+    #Verify auth token
+    x = requests.get('http://api:3000/posts/verifyUser', headers={'auth-token': authToken})
+    if(x.status_code != 200):
+        #Excepção a lançar caso autenticação inválida
+        raise HTTPException(status_code=401, detail="Unauthorized, invalid authentication credentials")
     
     #Verify if billId is valid
     try:

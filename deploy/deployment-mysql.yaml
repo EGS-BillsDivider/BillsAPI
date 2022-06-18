@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: bills-db
-  namespace: jpcg
+  namespace: egs1
 spec:
   selector:
     matchLabels:
@@ -26,18 +26,18 @@ spec:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: db-secrets
+              name: billsdb-secrets
               key: db_password
       volumes:
         - name: mysql-persistent-storage
           persistentVolumeClaim:
-            claimName: mysql-pv-claim
+            claimName: bills-pvc-claim
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: bills-db
-  namespace: jpcg
+  namespace: egs1
 spec:
   ports:
   - port: 3306
