@@ -33,7 +33,7 @@ async def root():
 @app.get("/bills")
 async def getbills(authToken: Optional[str] = Header(None)):
     #Verify auth token
-    x = requests.get('http://api:3000/posts/verifyUser', headers={'auth-token': authToken})
+    x = requests.get('http://api:3000/verifyUser', headers={'auth-token': authToken})
     if(x.status_code != 200):
         #Excepção a lançar caso autenticação inválida
         raise HTTPException(status_code=401, detail="Unauthorized, invalid authentication credentials")
@@ -48,7 +48,7 @@ async def getbills(authToken: Optional[str] = Header(None)):
 @app.get("/bill/{billId}")
 async def getbills(billId : str, authToken: Optional[str] = Header(None)):
     #Verify auth token
-    x = requests.get('http://api:3000/posts/verifyUser', headers={'auth-token': authToken})
+    x = requests.get('http://api:3000/verifyUser', headers={'auth-token': authToken})
     if(x.status_code != 200):
         #Excepção a lançar caso autenticação inválida
         raise HTTPException(status_code=401, detail="Unauthorized, invalid authentication credentials")
@@ -72,7 +72,7 @@ async def getbills(billId : str, authToken: Optional[str] = Header(None)):
 @app.post("/bill")
 async def postbill(bill : Bill, authToken: Optional[str] = Header(None)):
     #Verify auth token
-    x = requests.get('http://api:3000/posts/verifyUser', headers={'auth-token': authToken})
+    x = requests.get('http://api:3000/verifyUser', headers={'auth-token': authToken})
     if(x.status_code != 200):
         #Excepção a lançar caso autenticação inválida
         raise HTTPException(status_code=401, detail="Unauthorized, invalid authentication credentials")
@@ -101,7 +101,7 @@ async def postbill(bill : Bill, authToken: Optional[str] = Header(None)):
 @app.put("/bill/{billId}")
 async def putbill(billId : str, bill : UpdateBill, authToken: Optional[str] = Header(None)):
     #Verify auth token
-    x = requests.get('http://api:3000/posts/verifyUser', headers={'auth-token': authToken})
+    x = requests.get('http://api:3000/verifyUser', headers={'auth-token': authToken})
     if(x.status_code != 200):
         #Excepção a lançar caso autenticação inválida
         raise HTTPException(status_code=401, detail="Unauthorized, invalid authentication credentials")
@@ -140,7 +140,7 @@ async def putbill(billId : str, bill : UpdateBill, authToken: Optional[str] = He
 @app.delete("/bill/{billId}")
 async def deletebill(billId : str, authToken: Optional[str] = Header(None)):
     #Verify auth token
-    x = requests.get('http://api:3000/posts/verifyUser', headers={'auth-token': authToken})
+    x = requests.get('http://api:3000/verifyUser', headers={'auth-token': authToken})
     if(x.status_code != 200):
         #Excepção a lançar caso autenticação inválida
         raise HTTPException(status_code=401, detail="Unauthorized, invalid authentication credentials")
